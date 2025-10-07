@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ToDoList1.MainPage">
+    <ScrollView>
+        <VerticalStackLayout>
+            <Label Text="Главная" FontSize="24" FontAttributes="Bold" HorizontalTextAlignment="Center" Margin="0,0,0,20" />
+            <VerticalStackLayout Spacing="15">
+             
+                <HorizontalStackLayout>
+                    <Label Text="Проекты" VerticalOptions="Center" FontSize="30" Margin="5, 0, 0, 0"/>
+                    <Button Text="+" Margin="220, 0, 0, 0" Clicked="NewProject_Click"/>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
