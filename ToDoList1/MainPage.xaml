@@ -9,7 +9,7 @@
              
                 <HorizontalStackLayout>
                     <Label Text="Проекты" VerticalOptions="Center" FontSize="30" Margin="5, 0, 0, 0"/>
-                    <Button Text="+" Margin="220, 0, 0, 0" Clicked="NewProject_Click"/>
+                    <Button Text="+" Margin="220, 0, 0, 0" Clicked="AddProject_Click"/>
                 </HorizontalStackLayout>
                 <HorizontalStackLayout>
                 </HorizontalStackLayout>

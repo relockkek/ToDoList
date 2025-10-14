@@ -6,4 +6,9 @@ public partial class NewProjectPage : ContentPage
 	{
 		InitializeComponent();
 	}
+
+    private void AddProject(object sender, EventArgs e)
+    {
+		
+    }
 }
