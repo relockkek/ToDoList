@@ -13,8 +13,10 @@
         <Label Text="Название проекта" 
                Margin="10" 
                FontSize="25"/>
-        <Entry x:Name="ProjectName" FontSize="20" 
-               BackgroundColor="AliceBlue"/>
-        <Button Clicked="AddProject" Text="Создать проект"/>
+        <Entry x:Name="ProjectNameEntry" FontSize="20" 
+               BackgroundColor="AliceBlue" Placeholder="Введите название"/>
+        <Label Text="Описание"/>
+        <Entry x:Name="ProjectDescEntry" Placeholder="Введите описание"/>
+        <Button Clicked="SaveProject_Clicked" Text="Создать проект"/>
     </VerticalStackLayout>
 </ContentPage>

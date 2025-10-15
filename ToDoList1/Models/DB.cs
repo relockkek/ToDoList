@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace ToDoList1.Models
 {
-
     public class DB
     {
         private List<Projects> projects = new List<Projects>();
@@ -40,5 +39,31 @@ namespace ToDoList1.Models
             string tasksJson = System.Text.Json.JsonSerializer.Serialize(tasks);
             await File.WriteAllTextAsync(taskFile, tasksJson);
         }
+        //для получения данных
+        public List<Projects> GetProjects() => projects;
+        public List<Tasks> GetTasks() => tasks;
+        public List<Tags> GetTags() => tags;
+        public List<PodTasks> GetPodTasks() => podTasks; 
+        //для добавления данных
+        public void AddProject (Projects project)
+        {
+            projects.Add(project);
+        }
+
+        public void AddTask(Tasks task)
+        {
+            tasks.Add(task);
+        }
+        //след. id проекта
+        public int GetNextProjectId()
+        {
+            return projects.Count > 0 ? projects.Max(p => p.Id) + 1 : 1;
+        }
+
+        public int GetNextTaskId()
+        {
+            return tasks.Count > 0 ? tasks.Max(t => t.Id) + 1 : 1;
+        }
     }
+
 }

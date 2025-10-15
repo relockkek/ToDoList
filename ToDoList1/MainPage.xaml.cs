@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿
+using System.Threading.Tasks;
 using ToDoList1.Models;
 namespace ToDoList1
 {
@@ -13,12 +14,12 @@ namespace ToDoList1
         async void LoadData()
         {
            await db.LoadAllAsync();
+            ProjectsList.ItemsSource = db.GetProjects();
         }
 
         private async void AddProject_Click(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new NewProjectPage());
         }
-
     }
 }
