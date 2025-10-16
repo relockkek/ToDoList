@@ -13,13 +13,21 @@ namespace ToDoList1
         }
         async void LoadData()
         {
-           await db.LoadAllAsync();
-            ProjectsList.ItemsSource = db.GetProjects();
+            var projects = await db.GetProjectsAsync();
+            ProjectsList.ItemsSource = projects;
         }
 
         private async void AddProject_Click(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new NewProjectPage());
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            LoadData();
+            
+            
         }
     }
 }

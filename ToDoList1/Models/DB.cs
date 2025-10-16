@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,55 +17,86 @@ namespace ToDoList1.Models
 
         public async Task LoadAllAsync()
         {
+            await LoadProjectsAsync();
+            await LoadTasksAsync();
+
+
+        }
+        public async Task LoadProjectsAsync()
+        {
+            await Task.Delay(500);
             string projectFile = Path.Combine(FileSystem.AppDataDirectory, "projects.json");
             if (File.Exists(projectFile))
             {
                 string json = await File.ReadAllTextAsync(projectFile);
-                projects = System.Text.Json.JsonSerializer.Deserialize<List<Projects>>(json) ?? new List<Projects>();
-            }
+                var loadedProjects = System.Text.Json.JsonSerializer.Deserialize<List<Projects>>(json) ?? new List<Projects>();
 
+                projects.Clear();
+                foreach (var project in loadedProjects)
+                {
+                    projects.Add(project);
+                }
+            }
+        }
+
+        public async Task SaveProjectsAsync()
+        {
+            await Task.Delay(500);
+            string projectFile = Path.Combine(FileSystem.AppDataDirectory, "projects.json");
+            string projectsJson = System.Text.Json.JsonSerializer.Serialize(projects.ToList());
+            await File.WriteAllTextAsync(projectFile, projectsJson);
+        }
+
+        public async Task AddProjectsAsync(Projects project)
+        {
+            await Task.Delay(500);
+            projects.Add(project);
+            await SaveProjectsAsync();
+        }
+        public async Task LoadTasksAsync()
+        {
+            await Task.Delay(500);
             string taskFile = Path.Combine(FileSystem.AppDataDirectory, "tasks.json");
             if (File.Exists(taskFile))
             {
                 string json = await File.ReadAllTextAsync(taskFile);
-                tasks = System.Text.Json.JsonSerializer.Deserialize<List<Tasks>>(json) ?? new List<Tasks>();
+                var loadedTasks = System.Text.Json.JsonSerializer.Deserialize<List<Tasks>>(json) ?? new List<Tasks>();
+
+                tasks.Clear();
+                foreach (var task in loadedTasks)
+                {
+                    tasks.Add(task);
+                }
             }
         }
-        public async Task SaveAllSync()
-        {
-            string projectFile = Path.Combine(FileSystem.AppDataDirectory, "projects.json");
-            string projectsJson = System.Text.Json.JsonSerializer.Serialize(projects);
-            await File.WriteAllTextAsync(projectFile, projectsJson);
 
+        public async Task SaveTasksAsync()
+        {
+            await Task.Delay(500);
             string taskFile = Path.Combine(FileSystem.AppDataDirectory, "tasks.json");
-            string tasksJson = System.Text.Json.JsonSerializer.Serialize(tasks);
+            string tasksJson = System.Text.Json.JsonSerializer.Serialize(tasks.ToList());
             await File.WriteAllTextAsync(taskFile, tasksJson);
         }
-        //для получения данных
-        public List<Projects> GetProjects() => projects;
-        public List<Tasks> GetTasks() => tasks;
-        public List<Tags> GetTags() => tags;
-        public List<PodTasks> GetPodTasks() => podTasks; 
-        //для добавления данных
-        public void AddProject (Projects project)
+        public async Task AddTaskAsync(Tasks task)
         {
-            projects.Add(project);
+            await Task.Delay(500);
+            tasks.Add(task);
+            await SaveTasksAsync();
         }
 
-        public void AddTask(Tasks task)
+        public async Task<ObservableCollection<Tasks>> GetTasksAsync()
         {
-            tasks.Add(task);
+            await Task.Delay(500);
+            await LoadTasksAsync();
+            return tasks;
         }
-        //след. id проекта
-        public int GetNextProjectId()
+
+        public async Task<int> GetNextProjectIdAsync()
         {
+            await Task.Delay(500);
+            await LoadProjectsAsync();
             return projects.Count > 0 ? projects.Max(p => p.Id) + 1 : 1;
         }
-
-        public int GetNextTaskId()
-        {
-            return tasks.Count > 0 ? tasks.Max(t => t.Id) + 1 : 1;
-        }
     }
-
 }
+
