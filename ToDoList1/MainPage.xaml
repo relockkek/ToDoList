@@ -6,10 +6,15 @@
     <VerticalStackLayout>
         <Button Text="Добавить проект" Clicked="AddProject_Click"/>
         <Label Text="Проекты"/>
-        <ListView x:Name="ProjectsList">
+        <ListView  x:Name="ProjectsList" HasUnevenRows="True">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Text="{Binding Name}"/>
+                    <ViewCell>
+                        <StackLayout Orientation="Horizontal">
+                        <Label  Text="{Binding Name}"/>
+                        <Button Text="Открыть" Clicked="OpenProject" HorizontalOptions="End"/>
+                        </StackLayout>
+                    </ViewCell> 
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

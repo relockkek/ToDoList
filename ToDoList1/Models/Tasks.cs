@@ -13,7 +13,7 @@ namespace ToDoList1.Models
         public string Description { get; set; }
 
         public int? ProjectId { get; set; }
-        public Projects Projects { get; set; }
+        public Project Projects { get; set; }
         public int? TagId { get; set; }
         public Tags Tags { get; set; }
         

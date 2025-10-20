@@ -21,7 +21,7 @@ public partial class NewProjectPage : ContentPage
             {
                 var projects = await db.GetProjectsAsync();
                 int newId = projects.Count > 0 ? projects.Max(p => p.Id) + 1 : 1;
-                var newProject = new Projects
+                var newProject = new Project
                 {
                     Id = newId,
                     Name = name,
@@ -29,17 +29,17 @@ public partial class NewProjectPage : ContentPage
                 };
 
                 await db.AddProjectsAsync(newProject);
-                await DisplayAlert("Успех", "Проект добавлен", "OK");
+                await DisplayAlert("", "","OK");
                 await Navigation.PopAsync();
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Ошибка", ex.Message, "OK");
-            } 
+                await DisplayAlert("??????", ex.Message, "OK");
+            }
         }
         else
         {
-            await DisplayAlert("Ошибка", "Введите название проекта", "Ок");
+            await DisplayAlert("??????", "??????? ???????? ???????", "??");
         }
     }
 }

@@ -9,7 +9,6 @@ namespace ToDoList1
         public MainPage()
         {
             InitializeComponent();
-            LoadData();
         }
         async void LoadData()
         {
@@ -24,10 +23,13 @@ namespace ToDoList1
 
         protected override void OnAppearing()
         {
-            base.OnAppearing();
             LoadData();
-            
-            
+        }
+
+        private async void OpenProject(object sender, EventArgs e)
+        {
+           Project project = (Project)((Button)sender).BindingContext;
+           //await Navigation.PushAsync(new WindowProject());
         }
     }
 }

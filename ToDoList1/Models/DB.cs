@@ -10,7 +10,7 @@ namespace ToDoList1.Models
 {
     public class DB
     {
-        private List<Projects> projects = new List<Projects>();
+        private List<Project> projects = new List<Project>();
         private List<Tasks> tasks = new List<Tasks>();
         private List<Tags> tags = new List<Tags>();
         private List<PodTasks> podTasks = new List<PodTasks>();
@@ -29,7 +29,7 @@ namespace ToDoList1.Models
             if (File.Exists(projectFile))
             {
                 string json = await File.ReadAllTextAsync(projectFile);
-                var loadedProjects = System.Text.Json.JsonSerializer.Deserialize<List<Projects>>(json) ?? new List<Projects>();
+                var loadedProjects = System.Text.Json.JsonSerializer.Deserialize<List<Project>>(json) ?? new List<Project>();
 
                 projects.Clear();
                 foreach (var project in loadedProjects)
@@ -47,7 +47,7 @@ namespace ToDoList1.Models
             await File.WriteAllTextAsync(projectFile, projectsJson);
         }
 
-        public async Task AddProjectsAsync(Projects project)
+        public async Task AddProjectsAsync(Project project)
         {
             await Task.Delay(500);
             projects.Add(project);
@@ -84,18 +84,24 @@ namespace ToDoList1.Models
             await SaveTasksAsync();
         }
 
-        public async Task<ObservableCollection<Tasks>> GetTasksAsync()
-        {
-            await Task.Delay(500);
-            await LoadTasksAsync();
-            return tasks;
-        }
+        //public async Task<ObservableCollection<Tasks>> GetTasksAsync()
+        //{
+        //    await Task.Delay(500);
+        //    await LoadTasksAsync();
+        //    return tasks;
+        //}
 
         public async Task<int> GetNextProjectIdAsync()
         {
             await Task.Delay(500);
             await LoadProjectsAsync();
             return projects.Count > 0 ? projects.Max(p => p.Id) + 1 : 1;
+        }
+        public async Task<List<Project>> GetProjectsAsync()
+        {
+            await Task.Delay(500);
+            await LoadProjectsAsync();
+            return projects.ToList();
         }
     }
 }
