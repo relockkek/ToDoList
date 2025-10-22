@@ -1,27 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.Maui.Storage;
 
 namespace ToDoList1.Models
 {
     public class DB
     {
-        private List<Project> projects = new List<Project>();
-        private List<Tasks> tasks = new List<Tasks>();
-        private List<Tags> tags = new List<Tags>();
-        private List<PodTasks> podTasks = new List<PodTasks>();
+        private List<Project> projects = new();
+        private List<Tasks> tasks = new();
+        private List<Tags> tags = new();
+        private List<PodTasks> podTasks = new();
 
         public async Task LoadAllAsync()
         {
             await LoadProjectsAsync();
             await LoadTasksAsync();
-
-
         }
+
         public async Task LoadProjectsAsync()
         {
             await Task.Delay(500);
@@ -29,13 +29,10 @@ namespace ToDoList1.Models
             if (File.Exists(projectFile))
             {
                 string json = await File.ReadAllTextAsync(projectFile);
-                var loadedProjects = System.Text.Json.JsonSerializer.Deserialize<List<Project>>(json) ?? new List<Project>();
+                var loadedProjects = JsonSerializer.Deserialize<List<Project>>(json) ?? new List<Project>();
 
                 projects.Clear();
-                foreach (var project in loadedProjects)
-                {
-                    projects.Add(project);
-                }
+                projects.AddRange(loadedProjects);
             }
         }
 
@@ -43,7 +40,7 @@ namespace ToDoList1.Models
         {
             await Task.Delay(500);
             string projectFile = Path.Combine(FileSystem.AppDataDirectory, "projects.json");
-            string projectsJson = System.Text.Json.JsonSerializer.Serialize(projects.ToList());
+            string projectsJson = JsonSerializer.Serialize(projects);
             await File.WriteAllTextAsync(projectFile, projectsJson);
         }
 
@@ -53,6 +50,7 @@ namespace ToDoList1.Models
             projects.Add(project);
             await SaveProjectsAsync();
         }
+
         public async Task LoadTasksAsync()
         {
             await Task.Delay(500);
@@ -60,13 +58,10 @@ namespace ToDoList1.Models
             if (File.Exists(taskFile))
             {
                 string json = await File.ReadAllTextAsync(taskFile);
-                var loadedTasks = System.Text.Json.JsonSerializer.Deserialize<List<Tasks>>(json) ?? new List<Tasks>();
+                var loadedTasks = JsonSerializer.Deserialize<List<Tasks>>(json) ?? new List<Tasks>();
 
                 tasks.Clear();
-                foreach (var task in loadedTasks)
-                {
-                    tasks.Add(task);
-                }
+                tasks.AddRange(loadedTasks);
             }
         }
 
@@ -74,9 +69,10 @@ namespace ToDoList1.Models
         {
             await Task.Delay(500);
             string taskFile = Path.Combine(FileSystem.AppDataDirectory, "tasks.json");
-            string tasksJson = System.Text.Json.JsonSerializer.Serialize(tasks.ToList());
+            string tasksJson = JsonSerializer.Serialize(tasks);
             await File.WriteAllTextAsync(taskFile, tasksJson);
         }
+
         public async Task AddTaskAsync(Tasks task)
         {
             await Task.Delay(500);
@@ -84,12 +80,12 @@ namespace ToDoList1.Models
             await SaveTasksAsync();
         }
 
-        //public async Task<ObservableCollection<Tasks>> GetTasksAsync()
-        //{
-        //    await Task.Delay(500);
-        //    await LoadTasksAsync();
-        //    return tasks;
-        //}
+        public async Task<ObservableCollection<Tasks>> GetTasksAsync()
+        {
+            await Task.Delay(500);
+            await LoadTasksAsync();
+            return new ObservableCollection<Tasks>(tasks);
+        }
 
         public async Task<int> GetNextProjectIdAsync()
         {
@@ -97,6 +93,7 @@ namespace ToDoList1.Models
             await LoadProjectsAsync();
             return projects.Count > 0 ? projects.Max(p => p.Id) + 1 : 1;
         }
+
         public async Task<List<Project>> GetProjectsAsync()
         {
             await Task.Delay(500);
@@ -105,4 +102,3 @@ namespace ToDoList1.Models
         }
     }
 }
-

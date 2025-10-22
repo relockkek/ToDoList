@@ -2,21 +2,59 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ToDoList1.NewProjectPage"
-             Title="NewProjectPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Создание нового проекта"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center"
-            FontSize="25"
-            FontAttributes="Bold"/>
-        <Label Text="Название проекта" 
-               Margin="10" 
-               FontSize="25"/>
-        <Entry x:Name="ProjectNameEntry" FontSize="20" 
-               BackgroundColor="AliceBlue" Placeholder="Введите название"/>
-        <Label Text="Описание"/>
-        <Entry x:Name="ProjectDescEntry" Placeholder="Введите описание"/>
-        <Button Clicked="SaveProject_Clicked" Text="Создать проект"/>
-    </VerticalStackLayout>
+             Title="Новый проект">
+
+    <ScrollView Padding="20">
+        <VerticalStackLayout Spacing="20">
+
+            
+            <Border Stroke="#dee2e6"
+                    StrokeThickness="1"
+                    BackgroundColor="White"
+                    Padding="20">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="15" />
+                </Border.StrokeShape>
+
+                <VerticalStackLayout Spacing="15">
+
+                    
+                    <Label Text="Название проекта"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           TextColor="#2c3e50"/>
+
+                    <Entry x:Name="ProjectNameEntry"
+                           Placeholder="Введите название"
+                           BackgroundColor="#f8f9fa"
+                           HeightRequest="50"
+                           Margin="12"/>
+
+                    
+                    <Label Text="Описание"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           TextColor="#2c3e50"/>
+
+                    <Editor x:Name="ProjectDescEntry"
+                            Placeholder="Введите описание"
+                            BackgroundColor="#f8f9fa"
+                            HeightRequest="100"
+                            Margin="12"/>
+
+                    
+                    <Button Text="Создать проект"
+                            Clicked="SaveProject_Clicked"
+                            BackgroundColor="#27ae60"
+                            TextColor="White"
+                            FontSize="16"
+                            CornerRadius="25"
+                            HeightRequest="50"/>
+
+                </VerticalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
 </ContentPage>

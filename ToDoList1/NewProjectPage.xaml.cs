@@ -1,11 +1,12 @@
+﻿using ToDoList1.Models;
 using System.Threading.Tasks;
-using ToDoList1.Models;
 
 namespace ToDoList1;
 
 public partial class NewProjectPage : ContentPage
 {
-    private DB db = new DB();
+    private readonly DB db = new DB();
+
     public NewProjectPage()
     {
         InitializeComponent();
@@ -15,6 +16,7 @@ public partial class NewProjectPage : ContentPage
     {
         string name = ProjectNameEntry.Text;
         string description = ProjectDescEntry.Text;
+
         if (!string.IsNullOrWhiteSpace(name))
         {
             try
@@ -29,17 +31,17 @@ public partial class NewProjectPage : ContentPage
                 };
 
                 await db.AddProjectsAsync(newProject);
-                await DisplayAlert("", "","OK");
+                await DisplayAlert("Успех", "Проект добавлен", "OK");
                 await Navigation.PopAsync();
             }
             catch (Exception ex)
             {
-                await DisplayAlert("??????", ex.Message, "OK");
+                await DisplayAlert("Ошибка", ex.Message, "OK");
             }
         }
         else
         {
-            await DisplayAlert("??????", "??????? ???????? ???????", "??");
+            await DisplayAlert("Ошибка", "Введите название проекта", "OK");
         }
     }
 }

@@ -16,6 +16,7 @@ namespace ToDoList1.Models
         public Project Projects { get; set; }
         public int? TagId { get; set; }
         public Tags Tags { get; set; }
-        
+        public bool IsCompleted { get; set; }
+
     }
 }

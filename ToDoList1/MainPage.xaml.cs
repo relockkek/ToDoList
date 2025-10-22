@@ -1,35 +1,38 @@
-﻿
-using System.Threading.Tasks;
-using ToDoList1.Models;
-namespace ToDoList1
+﻿using ToDoList1.Models;
+
+namespace ToDoList1;
+
+public partial class MainPage : ContentPage
 {
-    public partial class MainPage : ContentPage
+    private readonly DB db = new DB();
+
+    public MainPage()
     {
-       private DB db = new DB();
-        public MainPage()
-        {
-            InitializeComponent();
-        }
-        async void LoadData()
-        {
-            var projects = await db.GetProjectsAsync();
-            ProjectsList.ItemsSource = projects;
-        }
+        InitializeComponent();
+        LoadData();
+    }
 
-        private async void AddProject_Click(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new NewProjectPage());
-        }
+    private async void LoadData()
+    {
+        await db.LoadAllAsync();
+        ProjectsList.ItemsSource = await db.GetProjectsAsync();
+    }
 
-        protected override void OnAppearing()
-        {
-            LoadData();
-        }
+    private async void AddProject_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new NewProjectPage());
+    }
 
-        private async void OpenProject(object sender, EventArgs e)
-        {
-           Project project = (Project)((Button)sender).BindingContext;
-           //await Navigation.PushAsync(new WindowProject());
-        }
+    private async void OpenProject_Clicked(object sender, EventArgs e)
+    {
+        var button = (Button)sender;
+        var project = (Project)button.CommandParameter;
+        await Navigation.PushAsync(new ProjectDetailsPage(project));
+    }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        LoadData();
     }
 }

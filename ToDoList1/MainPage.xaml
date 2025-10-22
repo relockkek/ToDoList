@@ -1,22 +1,73 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ToDoList1.MainPage" Title="Планировщик">
+             x:Class="ToDoList1.MainPage" 
+             Title="Планировщик" 
+             BackgroundColor="#f8f9fa">
 
-    <VerticalStackLayout>
-        <Button Text="Добавить проект" Clicked="AddProject_Click"/>
-        <Label Text="Проекты"/>
-        <ListView  x:Name="ProjectsList" HasUnevenRows="True">
-            <ListView.ItemTemplate>
+    <Grid RowDefinitions="Auto,*,Auto" Padding="20">
+
+        
+        <Label Text="Мои проекты" 
+               FontSize="28" 
+               FontAttributes="Bold" 
+               TextColor="#2c3e50"
+               HorizontalOptions="Center"
+               Grid.Row="0"/>
+
+        
+        <CollectionView x:Name="ProjectsList" 
+                       Grid.Row="1"
+                       Margin="0,20,0,0">
+            <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <ViewCell>
-                        <StackLayout Orientation="Horizontal">
-                        <Label  Text="{Binding Name}"/>
-                        <Button Text="Открыть" Clicked="OpenProject" HorizontalOptions="End"/>
-                        </StackLayout>
-                    </ViewCell> 
+                    <Grid BackgroundColor="White" 
+                          Padding="15" 
+                          Margin="0,0,0,10"
+                          ColumnDefinitions="*,Auto">
+
+                        
+                        <Grid.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="#ffffff" Offset="0"/>
+                                <GradientStop Color="#f8f9fa" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Grid.Background>
+
+                        <VerticalStackLayout Grid.Column="0">
+                            <Label Text="{Binding Name}" 
+                                   FontSize="18" 
+                                   FontAttributes="Bold"
+                                   TextColor="#2c3e50"/>
+                            <Label Text="{Binding Description}" 
+                                   FontSize="14" 
+                                   TextColor="#7f8c8d"
+                                   MaxLines="2"/>
+                        </VerticalStackLayout>
+
+                        <Button Text="➡" 
+                               Grid.Column="1"
+                               BackgroundColor="#3498db"
+                               TextColor="White"
+                               CornerRadius="20"
+                               WidthRequest="40"
+                               HeightRequest="40"
+                               Clicked="OpenProject_Clicked"
+                               CommandParameter="{Binding .}"/>
+                    </Grid>
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </VerticalStackLayout>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Button Text="+ Новый проект" 
+               Grid.Row="2"
+               BackgroundColor="#27ae60"
+               TextColor="White"
+               FontSize="16"
+               CornerRadius="25"
+               HeightRequest="50"
+               Clicked="AddProject_Clicked"
+               Margin="0,20,0,0"/>
+
+    </Grid>
 </ContentPage>
