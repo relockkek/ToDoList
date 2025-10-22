@@ -1,0 +1,18 @@
+﻿<Button Text="🗑"
+                BackgroundColor="#e74c3c"
+                TextColor="White"
+                CornerRadius="10"
+                WidthRequest="30"
+                HeightRequest="30"
+                FontSize="10"
+                Clicked="DeleteTask_Clicked"
+                />
+                   <Grid Grid.Row="2">
+            <Button Text="Назад"
+                    BackgroundColor="#95a5a6"
+                    TextColor="White"
+                    FontSize="16"
+                    CornerRadius="25"
+                    HeightRequest="50"
+                    Clicked="Back_Clicked"/>
+        </Grid>

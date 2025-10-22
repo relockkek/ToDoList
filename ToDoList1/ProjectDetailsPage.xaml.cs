@@ -59,15 +59,8 @@ public partial class ProjectDetailsPage : ContentPage
 
         if (answer)
         {
-            var allTasks = await db.GetTasksAsync();
-            var updatedTasks = allTasks.Where(t => t.Id != task.Id).ToList();
-
-            string taskFile = Path.Combine(FileSystem.AppDataDirectory, "tasks.json");
-            string tasksJson = JsonSerializer.Serialize(updatedTasks);
-            await File.WriteAllTextAsync(taskFile, tasksJson);
-
+            await db.DeleteTaskAsync(task.Id);
             await LoadTasks();
-            await DisplayAlert("Успех", "Задача удалена", "OK");
         }
     }
 
@@ -85,5 +78,10 @@ public partial class ProjectDetailsPage : ContentPage
     {
         var tasks = await db.GetTasksAsync();
         return tasks.Count > 0 ? tasks.Max(t => t.Id) + 1 : 1;
+    }
+
+    private void DeleteProject_Clicked(object sender, EventArgs e)
+    {
+
     }
 }

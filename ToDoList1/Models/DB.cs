@@ -79,7 +79,18 @@ namespace ToDoList1.Models
             tasks.Add(task);
             await SaveTasksAsync();
         }
+        public async Task DeleteTaskAsync(int taskId)
+        {
+            await Task.Delay(500);
+            await LoadTasksAsync();
 
+            var taskToRemove = tasks.FirstOrDefault(t => t.Id == taskId);
+            if (taskToRemove != null)
+            {
+                tasks.Remove(taskToRemove);
+                await SaveTasksAsync();
+            }
+        }
         public async Task<ObservableCollection<Tasks>> GetTasksAsync()
         {
             await Task.Delay(500);
