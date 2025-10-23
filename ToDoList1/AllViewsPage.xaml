@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ToDoList1.AllViewsPage"
+             Title="Все виды списков">
+
+    <ScrollView Padding="20">
+        <VerticalStackLayout Spacing="20">
+
+            <Label Text="ListView" FontSize="20" FontAttributes="Bold" TextColor="#2c3e50"/>
+            <ListView x:Name="ProjectsListView"
+                      HasUnevenRows="True"
+                      ItemTapped="ListView_ItemTapped">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Border BackgroundColor="White"
+                                    Stroke="#dee2e6"
+                                    StrokeThickness="1">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="10" />
+                                </Border.StrokeShape>
+                                <Grid Padding="15">
+                                    <VerticalStackLayout Spacing="5">
+                                        <Label Text="{Binding Name}" 
+                                               FontSize="18" 
+                                               FontAttributes="Bold"
+                                               TextColor="#2c3e50"/>
+                                        <Label Text="{Binding Description}" 
+                                               FontSize="14" 
+                                               TextColor="#7f8c8d"
+                                               MaxLines="2"/>
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Border>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            
+            <Label Text="CarouselView" FontSize="20" FontAttributes="Bold" TextColor="#2c3e50" Margin="0,30,0,0"/>
+            <CarouselView x:Name="ProjectsCarousel"
+                          PeekAreaInsets="50">
+                <CarouselView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BackgroundColor="White"
+                                Stroke="#dee2e6"
+                                StrokeThickness="1">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="15" />
+                            </Border.StrokeShape>
+                            <Grid Padding="20">
+                                <VerticalStackLayout Spacing="10">
+                                    <Label Text="{Binding Name}" 
+                                           FontSize="20" 
+                                           FontAttributes="Bold"
+                                           TextColor="#2c3e50"/>
+                                    <Label Text="{Binding Description}" 
+                                           FontSize="14" 
+                                           TextColor="#7f8c8d"
+                                           MaxLines="3"/>
+                                    <Button Text="Открыть проект" 
+                                            BackgroundColor="#3498db"
+                                            TextColor="White"
+                                            CornerRadius="10"
+                                            HeightRequest="40"
+                                            Clicked="Carousel_OpenProject_Clicked"
+                                            CommandParameter="{Binding .}"/>
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CarouselView.ItemTemplate>
+            </CarouselView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -15,7 +15,8 @@ public partial class MainPage : ContentPage
     private async void LoadData()
     {
         await db.LoadAllAsync();
-        ProjectsList.ItemsSource = await db.GetProjectsAsync();
+        var projects = await db.GetProjectsAsync();
+        ProjectsList.ItemsSource = projects;
     }
 
     private async void AddProject_Clicked(object sender, EventArgs e)
@@ -28,6 +29,11 @@ public partial class MainPage : ContentPage
         var button = (Button)sender;
         var project = (Project)button.CommandParameter;
         await Navigation.PushAsync(new ProjectDetailsPage(project));
+    }
+
+    private async void ShowAllViews_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new AllViewsPage());
     }
 
     protected override void OnAppearing()

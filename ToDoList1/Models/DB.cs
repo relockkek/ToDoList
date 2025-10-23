@@ -22,6 +22,8 @@ namespace ToDoList1.Models
             await LoadTasksAsync();
         }
 
+        
+
         public async Task LoadProjectsAsync()
         {
             await Task.Delay(500);
@@ -44,12 +46,62 @@ namespace ToDoList1.Models
             await File.WriteAllTextAsync(projectFile, projectsJson);
         }
 
+        public async Task<List<Project>> GetProjectsAsync()
+        {
+            await Task.Delay(500);
+            await LoadProjectsAsync();
+            return projects.ToList();
+        }
+
+        public async Task<Project?> GetProjectByIdAsync(int id)
+        {
+            await Task.Delay(500);
+            await LoadProjectsAsync();
+            return projects.FirstOrDefault(p => p.Id == id);
+        }
+
         public async Task AddProjectsAsync(Project project)
         {
             await Task.Delay(500);
             projects.Add(project);
             await SaveProjectsAsync();
         }
+
+        public async Task UpdateProjectAsync(Project project)
+        {
+            await Task.Delay(500);
+            await LoadProjectsAsync();
+            var index = projects.FindIndex(p => p.Id == project.Id);
+            if (index == -1)
+                throw new ArgumentException("Проект не найден");
+
+            projects[index] = project;
+            await SaveProjectsAsync();
+        }
+
+        public async Task DeleteProjectAsync(int projectId)
+        {
+            await Task.Delay(500);
+            await LoadProjectsAsync();
+            await LoadTasksAsync();
+
+            if (tasks.Any(t => t.ProjectId == projectId))
+            {
+                throw new InvalidOperationException("Нельзя удалить проект: у него есть задачи.");
+            }
+
+            projects.RemoveAll(p => p.Id == projectId);
+            await SaveProjectsAsync();
+        }
+
+        public async Task<int> GetNextProjectIdAsync()
+        {
+            await Task.Delay(500);
+            await LoadProjectsAsync();
+            return projects.Count > 0 ? projects.Max(p => p.Id) + 1 : 1;
+        }
+
+        
 
         public async Task LoadTasksAsync()
         {
@@ -73,12 +125,39 @@ namespace ToDoList1.Models
             await File.WriteAllTextAsync(taskFile, tasksJson);
         }
 
+        public async Task<ObservableCollection<Tasks>> GetTasksAsync()
+        {
+            await Task.Delay(500);
+            await LoadTasksAsync();
+            return new ObservableCollection<Tasks>(tasks);
+        }
+
+        public async Task<Tasks?> GetTaskByIdAsync(int id)
+        {
+            await Task.Delay(500);
+            await LoadTasksAsync();
+            return tasks.FirstOrDefault(t => t.Id == id);
+        }
+
         public async Task AddTaskAsync(Tasks task)
         {
             await Task.Delay(500);
             tasks.Add(task);
             await SaveTasksAsync();
         }
+
+        public async Task UpdateTaskAsync(Tasks task)
+        {
+            await Task.Delay(500);
+            await LoadTasksAsync();
+            var index = tasks.FindIndex(t => t.Id == task.Id);
+            if (index == -1)
+                throw new ArgumentException("Задача не найдена");
+
+            tasks[index] = task;
+            await SaveTasksAsync();
+        }
+
         public async Task DeleteTaskAsync(int taskId)
         {
             await Task.Delay(500);
@@ -91,25 +170,12 @@ namespace ToDoList1.Models
                 await SaveTasksAsync();
             }
         }
-        public async Task<ObservableCollection<Tasks>> GetTasksAsync()
+
+        public async Task<int> GetNextTaskIdAsync()
         {
             await Task.Delay(500);
             await LoadTasksAsync();
-            return new ObservableCollection<Tasks>(tasks);
-        }
-
-        public async Task<int> GetNextProjectIdAsync()
-        {
-            await Task.Delay(500);
-            await LoadProjectsAsync();
-            return projects.Count > 0 ? projects.Max(p => p.Id) + 1 : 1;
-        }
-
-        public async Task<List<Project>> GetProjectsAsync()
-        {
-            await Task.Delay(500);
-            await LoadProjectsAsync();
-            return projects.ToList();
+            return tasks.Count > 0 ? tasks.Max(t => t.Id) + 1 : 1;
         }
     }
 }
