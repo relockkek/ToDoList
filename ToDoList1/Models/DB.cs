@@ -85,10 +85,10 @@ namespace ToDoList1.Models
             await LoadProjectsAsync();
             await LoadTasksAsync();
 
-            if (tasks.Any(t => t.ProjectId == projectId))
-            {
-                throw new InvalidOperationException("Нельзя удалить проект: у него есть задачи.");
-            }
+            //if (tasks.Any(t => t.ProjectId == projectId))
+            //{
+            //    throw new InvalidOperationException("Нельзя удалить проект: у него есть задачи.");
+            //}
 
             projects.RemoveAll(p => p.Id == projectId);
             await SaveProjectsAsync();

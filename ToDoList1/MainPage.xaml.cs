@@ -31,14 +31,23 @@ public partial class MainPage : ContentPage
         await Navigation.PushAsync(new ProjectDetailsPage(project));
     }
 
-    private async void ShowAllViews_Clicked(object sender, EventArgs e)
-    {
-        await Navigation.PushAsync(new AllViewsPage());
-    }
+
 
     protected override void OnAppearing()
     {
         base.OnAppearing();
         LoadData();
+    }
+    private async void DeleteProject_Clicked(object sender, EventArgs e)
+    {
+        var button = (Button)sender;
+        var project = (Project)button.CommandParameter;
+
+        var confirm = await DisplayAlert("Удаление", $"Удалить проект '{project.Name}'?", "Да", "Нет");
+        if (confirm)
+        {
+            await db.DeleteProjectAsync(project.Id);
+            LoadData();
+        }
     }
 }

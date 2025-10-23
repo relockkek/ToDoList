@@ -7,14 +7,14 @@ namespace ToDoList1;
 public partial class ProjectDetailsPage : ContentPage
 {
     private readonly DB db = new();
-    private Project currentProject; 
+    private Project currentProject; // текущий проект
 
     public ProjectDetailsPage(Project project)
     {
         InitializeComponent();
         currentProject = project;
         LoadProjectData();
-        _ = LoadTasks(); 
+        _ = LoadTasks(); // загружаем задачи асинхронно
     }
 
     private void LoadProjectData()
@@ -31,7 +31,6 @@ public partial class ProjectDetailsPage : ContentPage
         TasksList.ItemsSource = projectTasks;
     }
 
-    
 
     private void EditButton_Clicked(object sender, EventArgs e)
     {
@@ -79,8 +78,6 @@ public partial class ProjectDetailsPage : ContentPage
         EditModeGrid.IsVisible = false;
         EditButton.IsVisible = true;
     }
-
-    
 
     private async void AddTask_Clicked(object sender, EventArgs e)
     {
@@ -138,9 +135,6 @@ public partial class ProjectDetailsPage : ContentPage
             await db.UpdateTaskAsync(task);
         }
     }
-
-  
-
     private async void DeleteProject_Clicked(object sender, EventArgs e)
     {
         try
