@@ -34,6 +34,12 @@
                                 HeightRequest="40"
                                 Clicked="OpenProject_Clicked"
                                 CommandParameter="{Binding .}"/>
+                                <Button Text="Удалить"
+                                        Background="Red"
+                                        CornerRadius="5"
+                                        HeightRequest="20"
+                                        Clicked="DeleteProject_Clicked"
+                                        CommandParameter="{Binding .}"/>
                             </VerticalStackLayout>
                         </Grid>
                     </Border>

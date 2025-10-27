@@ -34,7 +34,7 @@
                         <Entry x:Name="EditNameEntry" Placeholder="Название" />
 
                         <Label Text="Описание" FontSize="16" FontAttributes="Bold"/>
-                        <Editor x:Name="EditDescEditor" HeightRequest="100" />
+                        <Editor x:Name="EditDescEditor" HeightRequest="50" />
 
                         <HorizontalStackLayout Spacing="10">
                             <Button Text="Сохранить" Clicked="SaveEdit_Clicked" BackgroundColor="#27ae60" TextColor="White" CornerRadius="10"/>
