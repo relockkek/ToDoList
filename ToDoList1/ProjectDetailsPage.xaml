@@ -56,12 +56,13 @@
                 FontSize="14"/>
             </Grid>
         </Border>
-        <CollectionView x:Name="TasksList"
+
+        <ListView x:Name="TasksList"
                         Grid.Row="1"
-                        Margin="0,0,0,15"
-                        EmptyView="Нет задач">
-            <CollectionView.ItemTemplate>
+                        HasUnevenRows="True">
+            <ListView.ItemTemplate>
                 <DataTemplate>
+
                     <Border Stroke="#dee2e6"
                             StrokeThickness="1"
                             BackgroundColor="White"
@@ -93,8 +94,8 @@
                         </Grid>
                     </Border>
                 </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+            </ListView.ItemTemplate>
+        </ListView>
 
         <Button Text="+ Задача"
                 Grid.Row="2"
@@ -105,5 +106,74 @@
                 HeightRequest="50"
                 Clicked="AddTask_Clicked"/>
 
+        <StackLayout x:Name="PodTasksContainer"
+                     IsVisible="False"
+                     Padding="20,5"
+                     BackgroundColor="#f8f9fa">
+            <Label Text="Подзадачи:"
+                            FontSize="14"
+                            FontAttributes="Bold"
+                            Margin="0, 0, 0, 5"/>
+
+            <CollectionView x:Name="PodTasksList"
+                      HeightRequest="150"
+                      ItemsSource="{Binding PodTasks}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Padding="5" BackgroundColor="White">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <CheckBox Grid.Column="0"
+                                          IsChecked="{Binding IsCompleted}"
+                                          VerticalOptions="Center"/>
+
+                                <Label Grid.Column="1"
+                                       Text="{Binding Title}"
+                                       Margin="10, 0"
+                                       VerticalOptions="Center"/>
+
+                                <Button Grid.Column="2"
+                                        Text="🗑️"
+                                        BackgroundColor="Transparent"
+                                        FontSize="10"
+                                        Clicked="DeletePodTask_Clicked"
+                                        CommandParameter="{Binding .}"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Grid ColumnDefinitions="*, Auto" Margin="0, 10, 0, 0">
+                <Entry x:Name="PodTaskEntry"
+                      Placeholder="Новая подзадача"
+                      Grid.Column="0"/>
+                <Button Text="+"
+                        Grid.Column="1"
+                        BackgroundColor="#3498db"
+                        TextColor="White"
+                        Clicked="AddPodTask_Clicked"
+                        CommandParameter="{Binding .}"/>
+            </Grid>
+        </StackLayout>
+
+        <StackLayout Orientation="Horizontal"
+                         Grid.Row="3"
+                         Padding="20"
+                         Spacing="10">
+            <Button Text="Теги"
+                        BackgroundColor="#9b59b6"
+                        TextColor="White"
+                        Clicked="Tags_Clicked"/>
+            <Button Text="Назад"
+                        BackgroundColor="Gray"
+                        TextColor="White"
+                        Clicked="Back_Clicked"/>
+        </StackLayout>
     </Grid>
 </ContentPage>

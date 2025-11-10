@@ -7,14 +7,15 @@ namespace ToDoList1;
 public partial class ProjectDetailsPage : ContentPage
 {
     private readonly DB db = new();
-    private Project currentProject; // текущий проект
+    private Project currentProject;
+    private Tasks selectedTask;
 
     public ProjectDetailsPage(Project project)
     {
         InitializeComponent();
         currentProject = project;
         LoadProjectData();
-        _ = LoadTasks(); // загружаем задачи асинхронно
+        _ = LoadTasks(); 
     }
 
     private void LoadProjectData()
@@ -147,5 +148,27 @@ public partial class ProjectDetailsPage : ContentPage
         {
             await DisplayAlert("Ошибка", ex.Message, "OK");
         }
+    }
+
+    private void DeletePodTask_Clicked(object sender, EventArgs e)
+    {
+
+    }
+
+    private void AddPodTask_Clicked(object sender, EventArgs e)
+    {
+        var button = (Button)sender;
+        var task = (Tasks)button.CommandParameter;
+
+    }
+
+    private void Tags_Clicked(object sender, EventArgs e)
+    {
+
+    }
+
+    private void Back_Clicked(object sender, EventArgs e)
+    {
+
     }
 }
