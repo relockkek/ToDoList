@@ -9,7 +9,8 @@ namespace ToDoList1.Models
     public class Tags
     {
         public int Id { get; set; } 
-        public string Name { get; set; } = string.Empty;
-        public string Color { get; set; } = string.Empty;
+        public string Name { get; set; } = "";
+        public string Color { get; set; } = "";
+        public string Description { get; set; } = "";
     }
 }

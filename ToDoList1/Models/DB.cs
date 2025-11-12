@@ -259,6 +259,17 @@ namespace ToDoList1.Models
                 await SavePodTasksAsync();
             }
         }
+
+        public async Task DeleteTagAsync(int tagId)
+        {
+            await Task.Delay(100);
+            var tag = tags.FirstOrDefault(t => t.Id == tagId);
+            if (tag != null)
+            {
+                tags.Remove(tag);
+                await SaveTagsAsync();
+            }
+        }
     }
 
 }

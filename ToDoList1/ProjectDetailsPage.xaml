@@ -4,7 +4,9 @@
              x:Class="ToDoList1.ProjectDetailsPage"
              Title="Проект">
 
-    <Grid RowDefinitions="Auto,*,Auto" Padding="20">
+    <Grid RowDefinitions="Auto,*,Auto" RowSpacing="0" BackgroundColor="#f8f9fa">
+        
+        
         <Border x:Name="ProjectHeaderBorder"
                 Grid.Row="0"
                 Margin="0,0,0,15"
@@ -25,6 +27,49 @@
                            FontSize="16"
                            TextColor="#7f8c8d"
                            Margin="0,10,0,0"/>
+
+
+                        <StackLayout Grid.Row="1" Padding="15" BackgroundColor="Aquamarine">
+                            <Label Text="Теги проекта"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   Margin="0,0,0,10"/>
+
+                            <Grid ColumnDefinitions="*, Auto,Auto" ColumnSpacing="10">
+                                <Entry x:Name="TagNameEntry"
+                                       Placeholder="Название тега"
+                                       Grid.Column="0"/>
+
+                                <Entry x:Name="TagColorEntry"
+                                       Placeholder="#Color"
+                                       Grid.Column="1"
+                                       WidthRequest="80"/>
+                                <Button Text="+"
+                                        Grid.Column="2"
+                                        BackgroundColor="#9b59b6"
+                                        TextColor="White"
+                                        Clicked="AddTag_Clicked"/>
+                            </Grid>
+
+
+                            <CollectionView x:Name="TagsCollection"
+                                            HeightRequest="80"
+                                            Margin="0,10,0,0">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Frame Padding="8,5"
+                                               BackgroundColor="{Binding Color}"
+                                               CornerRadius="15"
+                                               Margin="2">
+                                            <Label Text="{Binding Name}"
+                                                   TextColor="White"
+                                                   FontSize="12"
+                                                   HorizontalOptions="Center"/>
+                                        </Frame>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </StackLayout>
                     </VerticalStackLayout>
                 </Grid>
 
@@ -42,58 +87,55 @@
                         </HorizontalStackLayout>
                     </VerticalStackLayout>
                 </Grid>
-
-
                 <Button x:Name="EditButton"
-                Grid.Row="0"
-                HorizontalOptions="End"
-                VerticalOptions="Start"
-                Margin="0,10"
-                Text="✏️ Редактировать"
-                Clicked="EditButton_Clicked"
-                BackgroundColor="Transparent"
-                TextColor="#3498db"
-                FontSize="14"/>
+                        Grid.Row="0"
+                        HorizontalOptions="End"
+                        VerticalOptions="Start"
+                        Margin="0,10"
+                        Text="✏️ Редактировать"
+                        Clicked="EditButton_Clicked"
+                        BackgroundColor="Transparent"
+                        TextColor="#3498db"
+                        FontSize="14"/>
             </Grid>
         </Border>
 
         <ListView x:Name="TasksList"
-                        Grid.Row="1"
-                        HasUnevenRows="True">
+                  Grid.Row="1">
             <ListView.ItemTemplate>
-                <DataTemplate>
-
-                    <Border Stroke="#dee2e6"
-                            StrokeThickness="1"
-                            BackgroundColor="White"
-                            Margin="0,0,0,10">
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="12" />
-                        </Border.StrokeShape>
-                        <Grid ColumnDefinitions="Auto,*,Auto,Auto"
-                              Padding="15">
+            <DataTemplate>
+                <ViewCell>
+                    <StackLayout Padding="10" BackgroundColor="White">
+                        <Grid ColumnDefinitions="Auto,*,Auto,Auto">
                             <CheckBox Grid.Column="0"
-                                      IsChecked="{Binding IsCompleted}"
-                                      Color="#27ae60"
                                       VerticalOptions="Center"
-                                      CheckedChanged="TaskCheckbox_Changed"/>
+                                      IsChecked="{Binding IsCompleted}"/>
 
-                            <VerticalStackLayout Grid.Column="1" Margin="10,0">
-                                <Label Text="{Binding Name}" FontSize="16" TextColor="#2c3e50"/>
-                                <Label Text="{Binding Description}" FontSize="12" TextColor="#7f8c8d"/>
-                            </VerticalStackLayout>
-                            <Button Grid.Column="2" Text="✏️" FontSize="12"
-                                    CommandParameter="{Binding .}"
-                                    Clicked="EditTask_Clicked"
-                                    BackgroundColor="Transparent" WidthRequest="40"/>
+                            <StackLayout Grid.Column="1" Margin="10,0">
+                                <Label Text="{Binding Name}"
+                                       FontSize="16"
+                                       TextColor="Black"/>
+                                <Label Text="{Binding Description}"
+                                       FontSize="12"
+                                       TextColor="Gray"
+                                       MaxLines="2"/>
+                            </StackLayout>
 
-                            <Button Grid.Column="3" Text="🗑️" FontSize="12"
-                                    CommandParameter="{Binding .}"
+                            <Button Grid.Column="2"
+                                    Text="➕"
+                                    BackgroundColor="Transparent"
+                                    Clicked="AddPodTask_Clicked"
+                                    CommandParameter="{Binding .}"/>
+
+                            <Button Grid.Column="3"
+                                    Text="❌"
+                                    BackgroundColor="Transparent"
                                     Clicked="DeleteTask_Clicked"
-                                    BackgroundColor="Transparent" WidthRequest="40"/>
+                                    CommandParameter="{Binding .}"/>
                         </Grid>
-                    </Border>
-                </DataTemplate>
+                    </StackLayout>
+                </ViewCell>
+            </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
 
@@ -115,13 +157,11 @@
                             FontAttributes="Bold"
                             Margin="0, 0, 0, 5"/>
 
-            <CollectionView x:Name="PodTasksList"
-                      HeightRequest="150"
-                      ItemsSource="{Binding PodTasks}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <Grid Padding="5" BackgroundColor="White">
+            <StackLayout Grid.Row="1" Padding="20,5" BackgroundColor="#f8f9fa">
+                <CollectionView ItemsSource="{Binding PodTasks}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Padding="5">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
@@ -129,25 +169,25 @@
                                 </Grid.ColumnDefinitions>
 
                                 <CheckBox Grid.Column="0"
-                                          IsChecked="{Binding IsCompleted}"
-                                          VerticalOptions="Center"/>
+                                    IsChecked="{Binding IsCompleted}"
+                                    VerticalOptions="Center"/>
 
                                 <Label Grid.Column="1"
-                                       Text="{Binding Title}"
-                                       Margin="10, 0"
-                                       VerticalOptions="Center"/>
+                                    Text="{Binding Title}"
+                                    Margin="10, 0"
+                                    VerticalOptions="Center"/>
 
                                 <Button Grid.Column="2"
-                                        Text="🗑️"
-                                        BackgroundColor="Transparent"
-                                        FontSize="10"
-                                        Clicked="DeletePodTask_Clicked"
-                                        CommandParameter="{Binding .}"/>
+                                    Text="🗑️"
+                                    BackgroundColor="Transparent"
+                                    FontSize="10"
+                                    Clicked="DeletePodTask_Clicked"
+                                    CommandParameter="{Binding .}"/>
                             </Grid>
-                        </ViewCell>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
 
             <Grid ColumnDefinitions="*, Auto" Margin="0, 10, 0, 0">
                 <Entry x:Name="PodTaskEntry"
@@ -166,14 +206,8 @@
                          Grid.Row="3"
                          Padding="20"
                          Spacing="10">
-            <Button Text="Теги"
-                        BackgroundColor="#9b59b6"
-                        TextColor="White"
-                        Clicked="Tags_Clicked"/>
-            <Button Text="Назад"
-                        BackgroundColor="Gray"
-                        TextColor="White"
-                        Clicked="Back_Clicked"/>
+             
+            
         </StackLayout>
     </Grid>
 </ContentPage>

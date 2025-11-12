@@ -9,16 +9,17 @@ namespace ToDoList1.Models
     public class Tasks
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-
+        public string Name { get; set; } = "";
+        public string? Description { get; set; }
         public int? ProjectId { get; set; }
-        public Project Projects { get; set; }
         public int? TagId { get; set; }
-        public Tags Tags { get; set; }
         public List<PodTasks> PodTasks { get; set; } = new List<PodTasks>();
-        public bool IsExpanded { get; set; }
         public bool IsCompleted { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
 
     }
 }

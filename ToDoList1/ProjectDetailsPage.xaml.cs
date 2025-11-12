@@ -1,6 +1,7 @@
 ﻿using ToDoList1.Models;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace ToDoList1;
 
@@ -8,14 +9,14 @@ public partial class ProjectDetailsPage : ContentPage
 {
     private readonly DB db = new();
     private Project currentProject;
-    private Tasks selectedTask;
 
     public ProjectDetailsPage(Project project)
     {
         InitializeComponent();
         currentProject = project;
         LoadProjectData();
-        _ = LoadTasks(); 
+        _ = LoadTasksAsync();
+        _ = LoadTagsAsync();
     }
 
     private void LoadProjectData()
@@ -25,13 +26,36 @@ public partial class ProjectDetailsPage : ContentPage
         Title = currentProject.Name;
     }
 
-    private async Task LoadTasks()
+    async Task LoadTasksAsync()
     {
-        var tasks = await db.GetTasksAsync();
-        var projectTasks = tasks.Where(t => t.ProjectId == currentProject.Id).ToList();
-        TasksList.ItemsSource = projectTasks;
-    }
+        try
+        {
+            var tasks = await db.GetTasksAsync();
+            var projectTasks = tasks.Where(t => t.ProjectId == currentProject.Id).ToList();
 
+            foreach (var task in projectTasks )
+            {
+                task.PodTasks = await db.GetPodTasksByTaskAsync(task.Id);
+            }
+            TasksList.ItemsSource = projectTasks;
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Ошибка", ex.Message, "ОК");
+        }
+    }
+    async Task LoadTagsAsync()
+    {
+        try
+        {
+            var tags = await db.GetTagsAsync();
+            TagsCollection.ItemsSource = tags;
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Ошибка", ex.Message, "ОК");
+        }
+    }
 
     private void EditButton_Clicked(object sender, EventArgs e)
     {
@@ -92,7 +116,7 @@ public partial class ProjectDetailsPage : ContentPage
         };
 
         await db.AddTaskAsync(newTask);
-        await LoadTasks();
+        await LoadTasksAsync();
     }
 
     private async void EditTask_Clicked(object sender, EventArgs e)
@@ -110,7 +134,7 @@ public partial class ProjectDetailsPage : ContentPage
         task.Description = newDesc;
 
         await db.UpdateTaskAsync(task);
-        await LoadTasks();
+        await LoadTasksAsync();
     }
 
     private async void DeleteTask_Clicked(object sender, EventArgs e)
@@ -122,7 +146,7 @@ public partial class ProjectDetailsPage : ContentPage
         if (confirm)
         {
             await db.DeleteTaskAsync(task.Id);
-            await LoadTasks();
+            await LoadTasksAsync();
         }
     }
 
@@ -150,25 +174,91 @@ public partial class ProjectDetailsPage : ContentPage
         }
     }
 
-    private void DeletePodTask_Clicked(object sender, EventArgs e)
-    {
 
-    }
-
-    private void AddPodTask_Clicked(object sender, EventArgs e)
+    private async void AddPodTask_Clicked(object sender, EventArgs e)
     {
         var button = (Button)sender;
         var task = (Tasks)button.CommandParameter;
 
+        string podTaskTitle = await DisplayPromptAsync("Новая подзадача", "Введите название");
+        
+        if (!string.IsNullOrWhiteSpace(podTaskTitle))
+        {
+            var podTasks = await db.GetPodTasksByTaskAsync(task.Id);
+            int newId = podTasks.Count > 0 ? podTasks.Max(pt => pt.Id) + 1 : 1;
+
+            var newPodTask = new PodTasks
+            {
+                Id = newId,
+                Title = podTaskTitle,
+                IsCompleted = true,
+                TaskId = task.Id
+            };
+
+            await db.AddPodTaskAsync(newPodTask);
+            await LoadTasksAsync();
+        }
+
     }
 
-    private void Tags_Clicked(object sender, EventArgs e)
+    private async void Tags_Clicked(object sender, EventArgs e)
     {
-
+        await Shell.Current.GoToAsync("TagsPage");
     }
 
-    private void Back_Clicked(object sender, EventArgs e)
+    private async void Back_Clicked(object sender, EventArgs e)
     {
+        await Navigation.PopAsync();
+    }
 
+    private async void DeletePodTask_Clicked(object sender, EventArgs e)
+    {
+        var button = (Button)sender;
+        var podTask = (PodTasks)button.CommandParameter;
+
+        bool answer = await DisplayAlert("Удаление",
+            $"Удалить задачу '{podTask.Title}'?", "Да", "Нет");
+
+        if (answer)
+        {
+            await db.DeletePodTaskAsync(podTask.Id);
+            await LoadTasksAsync();
+        }
+    }
+
+    private async void AddTag_Clicked(object sender, EventArgs e)
+    {
+        string name = TagNameEntry.Text;
+        string color = TagColorEntry.Text;
+
+        if (!string.IsNullOrWhiteSpace(name))
+        {
+            try
+            {
+                var tags = await db.GetTagsAsync();
+                int newId = tags.Count > 0 ? tags.Max(t => t.Id) + 1 : 1;
+                var newTag = new Tags
+                {
+                    Id = newId,
+                    Name = name,
+                    Color = string.IsNullOrWhiteSpace(color) ? "#3498db" : color,
+                    Description = ""
+                };
+                await db.AddTagAsync(newTag);
+                await LoadTagsAsync();
+
+                TagNameEntry.Text = "";
+                TagColorEntry.Text = "";
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Ошибка", ex.Message, "ОК");
+            }
+            
+
+
+
+           
+        }
     }
 }
