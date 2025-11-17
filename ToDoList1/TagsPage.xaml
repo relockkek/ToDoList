@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ToDoList1.TagsPage"
+             Title="TagsPage">
+    <VerticalStackLayout>
+        <StackLayout Grid.Row="1" Padding="15">
+            <Label Text="Теги проекта"
+                   FontSize="16"
+                   FontAttributes="Bold"
+                   Margin="0,0,0,10"/>
+
+            <Grid ColumnDefinitions="*, Auto,Auto" ColumnSpacing="10">
+                <Entry x:Name="TagNameEntry"
+                       Placeholder="Название тега"
+                       Grid.Column="0"/>
+
+                <Entry x:Name="TagColorEntry"
+                       Placeholder="#Color"
+                       Grid.Column="1"
+                       WidthRequest="80"/>
+                <Button Text="+"
+                       Grid.Column="2"
+                       BackgroundColor="#9b59b6"
+                       TextColor="White"
+                       Clicked="AddTag_Clicked"/>
+            </Grid>
+            <CollectionView x:Name="TagsCollection"
+                            HeightRequest="1000"
+                            Margin="5">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border HeightRequest="80"
+                               BackgroundColor="{Binding Color}"
+                               Margin="2">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Name}"
+                                       TextColor="Black"
+                                       FontSize="18"
+                                       HorizontalOptions="Center"/>
+                                <HorizontalStackLayout HorizontalOptions="Center" Margin="2">
+                                    <Button Text="Редактировать" 
+                                            Clicked="EditTag_Clicked" 
+                                            HeightRequest="13" 
+                                            WidthRequest="110" 
+                                            BackgroundColor="Green" 
+                                            BorderColor="Black"
+                                            BorderWidth="1"
+                                            FontSize="10"
+                                            Margin="2"/>
+                                            
+                                    <Button Text="Удалить" 
+                                            Clicked="DeleteTag_Clicked" 
+                                            HeightRequest="13" 
+                                            WidthRequest="110" 
+                                            Background="Red" 
+                                            BorderColor="Black"
+                                            BorderWidth="1"
+                                            FontSize="10"
+                                            Margin="2"/>
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </VerticalStackLayout>
+</ContentPage>

@@ -50,4 +50,11 @@ public partial class MainPage : ContentPage
             LoadData();
         }
     }
+
+    private async void TagsRedact_Clicked(object sender, EventArgs e)
+    {
+        var button = (Button)sender;
+        var tags = (Tags)button.CommandParameter;
+        await Navigation.PushAsync(new TagsPage(tags));
+    }
 }

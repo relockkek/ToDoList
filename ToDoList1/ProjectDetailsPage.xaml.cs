@@ -49,7 +49,6 @@ public partial class ProjectDetailsPage : ContentPage
         try
         {
             var tags = await db.GetTagsAsync();
-            TagsCollection.ItemsSource = tags;
         }
         catch (Exception ex)
         {
@@ -225,40 +224,5 @@ public partial class ProjectDetailsPage : ContentPage
             await LoadTasksAsync();
         }
     }
-
-    private async void AddTag_Clicked(object sender, EventArgs e)
-    {
-        string name = TagNameEntry.Text;
-        string color = TagColorEntry.Text;
-
-        if (!string.IsNullOrWhiteSpace(name))
-        {
-            try
-            {
-                var tags = await db.GetTagsAsync();
-                int newId = tags.Count > 0 ? tags.Max(t => t.Id) + 1 : 1;
-                var newTag = new Tags
-                {
-                    Id = newId,
-                    Name = name,
-                    Color = string.IsNullOrWhiteSpace(color) ? "#3498db" : color,
-                    Description = ""
-                };
-                await db.AddTagAsync(newTag);
-                await LoadTagsAsync();
-
-                TagNameEntry.Text = "";
-                TagColorEntry.Text = "";
-            }
-            catch (Exception ex)
-            {
-                await DisplayAlert("Ошибка", ex.Message, "ОК");
-            }
-            
-
-
-
-           
-        }
-    }
+    
 }
