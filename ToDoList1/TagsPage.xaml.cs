@@ -53,14 +53,14 @@ public partial class TagsPage : ContentPage
     }
     private void EditTag_Clicked(object sender, EventArgs e)
     {
-
+        //TagNameEntry.Text = Tag.Name;
     }
     private async void DeleteTag_Clicked(object sender, EventArgs e)
     {
         var button = (Button)sender;
         var tag = (Tags)button.CommandParameter;
 
-        var confirm = await DisplayAlert("Удаление", $"Удалить тэг '{tag.Id}'?", "Да", "Нет");
+        var confirm = await DisplayAlert("Удаление", $"Удалить тэг '{tag.Name}'?", "Да", "Нет");
         if (confirm)
         {
             await db.DeleteTagAsync(tag.Id);

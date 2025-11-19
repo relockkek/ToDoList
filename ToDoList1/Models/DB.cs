@@ -268,7 +268,9 @@ namespace ToDoList1.Models
             {
                 tags.Remove(tag);
                 await SaveTagsAsync();
+                
             }
+            await LoadTagsAsync();
         }
     }
 

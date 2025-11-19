@@ -38,6 +38,10 @@
                                        TextColor="Black"
                                        FontSize="18"
                                        HorizontalOptions="Center"/>
+                                <Entry x:Name="TagNameEntry"
+                                       Placeholder="Введите название"
+                                       HeightRequest="50"
+                                       Margin="12"/>
                                 <HorizontalStackLayout HorizontalOptions="Center" Margin="2">
                                     <Button Text="Редактировать" 
                                             Clicked="EditTag_Clicked" 
@@ -57,6 +61,7 @@
                                             BorderColor="Black"
                                             BorderWidth="1"
                                             FontSize="10"
+                                            CommandParameter="{Binding .}"
                                             Margin="2"/>
                                 </HorizontalStackLayout>
                             </VerticalStackLayout>
