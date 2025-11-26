@@ -37,7 +37,7 @@ public partial class ProjectDetailsPage : ContentPage
             {
                 task.PodTasks = await db.GetPodTasksByTaskAsync(task.Id);
             }
-            TasksList.ItemsSource = projectTasks;
+            TasksList.ItemsSource = projectTasks; 
         }
         catch (Exception ex)
         {
@@ -195,11 +195,26 @@ public partial class ProjectDetailsPage : ContentPage
             };
 
             await db.AddPodTaskAsync(newPodTask);
-            await LoadTasksAsync();
+            await UpdateTaskPodTasks(task.Id);
         }
 
     }
+    private async Task UpdateTaskPodTasks(int taskId)
+    {
+        var tasks = (TasksList.ItemsSource as List<Tasks>);
+        if (tasks != null)
+        {
+            var taskToUpdate = tasks.FirstOrDefault(t => t.Id == taskId);
+            if (taskToUpdate != null)
+            {
+                taskToUpdate.PodTasks = await db.GetPodTasksByTaskAsync(taskId);
 
+
+                TasksList.ItemsSource = null;
+                TasksList.ItemsSource = tasks;
+            }
+        }
+    }
     private async void Tags_Clicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("TagsPage");
