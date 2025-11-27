@@ -5,7 +5,7 @@ namespace ToDoList1;
 public partial class TagsPage : ContentPage
 {
     private readonly DB db = new();
-    public TagsPage(Tags tags)
+    public TagsPage(Tag tags)
 	{
 		InitializeComponent();
         LoadTagsAsync();
@@ -33,7 +33,7 @@ public partial class TagsPage : ContentPage
             {
                 var tags = await db.GetTagsAsync();
                 int newId = tags.Count > 0 ? tags.Max(t => t.Id) + 1 : 1;
-                var newTag = new Tags
+                var newTag = new Tag
                 {
                     Id = newId,
                     Name = name,
@@ -58,7 +58,7 @@ public partial class TagsPage : ContentPage
     private async void DeleteTag_Clicked(object sender, EventArgs e)
     {
         var button = (Button)sender;
-        var tag = (Tags)button.CommandParameter;
+        var tag = (Tag)button.CommandParameter;
 
         var confirm = await DisplayAlert("Удаление", $"Удалить тэг '{tag.Name}'?", "Да", "Нет");
         if (confirm)

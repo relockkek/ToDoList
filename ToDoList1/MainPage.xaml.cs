@@ -54,7 +54,7 @@ public partial class MainPage : ContentPage
     private async void TagsRedact_Clicked(object sender, EventArgs e)
     {
         var button = (Button)sender;
-        var tags = (Tags)button.CommandParameter;
+        var tags = (Tag)button.CommandParameter;
         await Navigation.PushAsync(new TagsPage(tags));
     }
 }

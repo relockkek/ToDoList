@@ -76,20 +76,24 @@
                                        FontSize="12"
                                        TextColor="Gray"
                                        MaxLines="2"/>
-                            </StackLayout>
+                                <Label Text="Выберите тег"/>
+                                    <Picker ItemsSource="{Binding Path=BindingContext.Tags, Source={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentPage}}}"
+                                            Title="Теги"
+                                            ItemDisplayBinding="{Binding Name}"
+                                            SelectedItem="{Binding Tag}"/>
+                                </StackLayout>
 
                             <Button Grid.Column="2"
-                                    Text="➕"
+                                    Text="✏️"
                                     BackgroundColor="Transparent"
-                                    Clicked="AddPodTask_Clicked"
+                                    Clicked="EditTask_Clicked"
                                     CommandParameter="{Binding .}"/>
-
                             <Button Grid.Column="3"
                                     Text="❌"
                                     BackgroundColor="Transparent"
                                     Clicked="DeleteTask_Clicked"
                                     CommandParameter="{Binding .}"/>
-                        </Grid>
+                            </Grid>
                     </StackLayout>
                 </ViewCell>
             </DataTemplate>

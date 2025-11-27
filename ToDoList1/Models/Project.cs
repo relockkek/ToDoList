@@ -11,5 +11,7 @@ namespace ToDoList1.Models
         public int Id { get; set; }
         public string? Name { get; set; } = string.Empty;
         public string? Description { get; set; } = string.Empty;
+        public int TagId { get; set; }
+        public Tag Tag { get; set; }  
     }
 }

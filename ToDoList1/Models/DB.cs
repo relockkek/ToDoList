@@ -16,7 +16,7 @@ namespace ToDoList1.Models
 
         private List<Project> projects = new();
         private List<Tasks> tasks = new();
-        private List<Tags> tags = new();
+        private List<Tag> tags = new();
         private List<PodTasks> podTasks = new();
         public async Task LoadAllAsync()
         {
@@ -181,7 +181,7 @@ namespace ToDoList1.Models
             if (File.Exists(tagsFile))
             {
                 string json = await File.ReadAllTextAsync(tagsFile);
-                var loadedTags = System.Text.Json.JsonSerializer.Deserialize<List<Tags>>(json) ?? new List<Tags>();
+                var loadedTags = System.Text.Json.JsonSerializer.Deserialize<List<Tag>>(json) ?? new List<Tag>();
                 tags.Clear();
                 foreach (var tag in loadedTags)
                 {
@@ -198,14 +198,14 @@ namespace ToDoList1.Models
             await File.WriteAllTextAsync(tagsFile, tagsJson);
         }
 
-        public async Task AddTagAsync (Tags tag)
+        public async Task AddTagAsync (Tag tag)
         {
             await Task.Delay(100);
             tags.Add (tag);
             await SaveTagsAsync();
         }
 
-        public async Task<List<Tags>> GetTagsAsync()
+        public async Task<List<Tag>> GetTagsAsync()
         {
             await LoadTagsAsync();
             return tags.ToList();

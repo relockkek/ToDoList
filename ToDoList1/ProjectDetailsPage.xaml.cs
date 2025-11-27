@@ -17,6 +17,7 @@ public partial class ProjectDetailsPage : ContentPage
         LoadProjectData();
         _ = LoadTasksAsync();
         _ = LoadTagsAsync();
+        BindingContext = this;
     }
 
     private void LoadProjectData()
