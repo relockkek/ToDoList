@@ -58,11 +58,11 @@
         </Border>
 
         <ListView x:Name="TasksList"
-                  Grid.Row="1">
+                  Grid.Row="1" HasUnevenRows="True">
             <ListView.ItemTemplate>
             <DataTemplate>
                 <ViewCell>
-                    <StackLayout Margin="5" HeightRequest="50" BackgroundColor="White">
+                    <StackLayout Margin="5" BackgroundColor="White">
                         <Grid ColumnDefinitions="Auto,*,Auto,Auto">
                             <CheckBox Grid.Column="0"
                                       VerticalOptions="Center"

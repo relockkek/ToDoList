@@ -1,3 +1,5 @@
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using ToDoList1.Models;
 
 namespace ToDoList1;
@@ -5,11 +7,29 @@ namespace ToDoList1;
 public partial class TagsPage : ContentPage
 {
     private readonly DB db = new();
+    private ObservableCollection<string> tags = new ObservableCollection<string>();
+    
+    private List<string> tempTags = new List<string>();
+    
     public TagsPage(Tag tags)
 	{
 		InitializeComponent();
         LoadTagsAsync();
+        var editButton = this.FindByName<Button>("EditButton");
+
+        if (editButton == null)
+        {
+            var toolbarItem = new ToolbarItem
+            {
+                Text = "Редактировать",
+                Priority = 0
+            };
+            toolbarItem.Clicked += EditTag_Clicked;
+
+            this.ToolbarItems.Add(toolbarItem);
+        }
 	}
+    
     async Task LoadTagsAsync()
     {
         try
@@ -51,9 +71,12 @@ public partial class TagsPage : ContentPage
             }
         }
     }
-    private void EditTag_Clicked(object sender, EventArgs e)
+    private async void EditTag_Clicked(object sender, EventArgs e)
     {
-        //TagNameEntry.Text = Tag.Name;
+        tempTags = new List<string>(tags);
+
+        var result = await DisplayAlert("Редактирование тегов",
+            "Вы хотите редактировать теги?", "Да", "Нет");
     }
     private async void DeleteTag_Clicked(object sender, EventArgs e)
     {
@@ -65,5 +88,15 @@ public partial class TagsPage : ContentPage
         {
             await db.DeleteTagAsync(tag.Id);
         }
+    }
+
+    private void CancelButton_Clicked(object sender, EventArgs e)
+    {
+
+    }
+
+    private void SaveButton_Clicked(object sender, EventArgs e)
+    {
+
     }
 }
